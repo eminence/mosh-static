@@ -15,6 +15,12 @@ rm -rf $PREFIX
 
 export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
 export PATH=$PREFIX/bin:$PATH
+export CFLAGS=
+export CXXFLAGS=
+export LDFLAGS=
+export CPPFLAGS=
+export ACLOCAL_FLAGS=
+export LD_LIBRARY_PATH=
 
 
 cd $ROOT/deps/zlib
@@ -31,13 +37,25 @@ make -j6
 make install
 
 cd $ROOT/deps
-wget 'http://ftp.gnu.org/gnu/ncurses/ncurses-6.0.tar.gz' 
-tar -zxf ncurses-6.0.tar.gz
+wget 'http://ftp.gnu.org/gnu/ncurses/ncurses-5.9.tar.gz' 
+rm -rf ncurses-5.9
+tar -zxf ncurses-5.9.tar.gz
 
-cd $ROOT/deps/ncurses-6.0
-./configure --prefix=$PREFIX
+cd $ROOT/deps/ncurses-5.9
+env CFLAGS=-fPIC ./configure --prefix=$PREFIX --without-shared --enable-widec --enable-pc-files
 make -j6
 make install
+
+cd $ROOT/deps
+wget 'http://www.cpan.org/src/5.0/perl-5.22.1.tar.gz'
+rm -rf $ROOT/deps/perl-5.22.1
+tar -zxf perl-5.22.1.tar.gz
+cd $ROOT/deps/perl-5.22.1
+./Configure -des -Dprefix=$PREFIX
+make -j6
+make install
+
+
 
 cd $ROOT/deps/openssl
 ./config --prefix=$PREFIX no-shared
@@ -45,7 +63,8 @@ make -j6
 make install
 
 cd $ROOT/deps/mosh
-#./autogen.sh
-env "LDFLAGS=${ldflags_zlib} -static" ./configure --prefix=$PREFIX
+./autogen.sh
+#env "LDFLAGS=${ldflags_zlib} -static" ./configure --prefix=$PREFIX
+./configure --prefix=$PREFIX
 make
 make install
