@@ -16,13 +16,13 @@ rm -rf $PREFIX
 export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
 export PATH=$PREFIX/bin:$PATH
 
-ldflags_zlib=`pkg-config --libs-only-L zlib`
 
 cd $ROOT/deps/zlib
 env CFLAGS=-fPIC ./configure --static --prefix=$PREFIX
 make -j6
 make install
 
+ldflags_zlib=`pkg-config --libs-only-L zlib`
 
 cd $ROOT/deps/protobuf
 ./autogen.sh
