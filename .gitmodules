@@ -1,0 +1,12 @@
+[submodule "deps/protobuf"]
+	path = deps/protobuf
+	url = https://github.com/google/protobuf.git
+[submodule "deps/mosh"]
+	path = deps/mosh
+	url = https://github.com/mobile-shell/mosh.git
+[submodule "deps/zlib"]
+	path = deps/zlib
+	url = https://github.com/madler/zlib.git
+[submodule "deps/openssl"]
+	path = deps/openssl
+	url = git://git.openssl.org/openssl.git
