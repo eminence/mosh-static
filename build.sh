@@ -14,6 +14,7 @@ git submodule foreach git clean -dfx
 rm -rf $PREFIX
 
 export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
+export PKG_CONFIG_LIBDIR=$PREFIX/lib/pkgconfig
 export PATH=$PREFIX/bin:$PATH
 export CFLAGS=
 export CXXFLAGS=
@@ -37,7 +38,9 @@ make -j6
 make install
 
 cd $ROOT/deps
-wget 'http://ftp.gnu.org/gnu/ncurses/ncurses-5.9.tar.gz' 
+if [ ! -f ncurses-5.9.tar.gz ]; then
+    wget 'http://ftp.gnu.org/gnu/ncurses/ncurses-5.9.tar.gz' 
+fi
 rm -rf ncurses-5.9
 tar -zxf ncurses-5.9.tar.gz
 
@@ -47,7 +50,9 @@ make -j6
 make install
 
 cd $ROOT/deps
+if [ ! -f perl-5.22.1.tar.gz ]; then
 wget 'http://www.cpan.org/src/5.0/perl-5.22.1.tar.gz'
+fi
 rm -rf $ROOT/deps/perl-5.22.1
 tar -zxf perl-5.22.1.tar.gz
 cd $ROOT/deps/perl-5.22.1
@@ -64,7 +69,7 @@ make install
 
 cd $ROOT/deps/mosh
 ./autogen.sh
-#env "LDFLAGS=${ldflags_zlib} -static" ./configure --prefix=$PREFIX
-./configure --prefix=$PREFIX
+env "LDFLAGS=${ldflags_zlib} -static" ./configure --prefix=$PREFIX
+#./configure --prefix=$PREFIX
 make
 make install
